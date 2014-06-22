@@ -52,13 +52,13 @@ function writeElFiles($task,$elementsPath,$elementsPackage,$settings,$category_i
             $element = $object->toArray();
             unset($element[$contentField]);
             unset($element['content']);
-            $filename = $dir . '/' . $object->get($nameField) . $elementsSuffix;
+            $filename = $dir . '/' . strtolower($object->get($nameField)) . $elementsSuffix;
             $content = $object->getContent();
             if (strstr($elementsSuffix, '.php')) {
                 $content = '<?php' . "\n" . $content;
             }
 
-            writeElFile(strtolower($filename), $content);
+            writeElFile($filename, $content);
             
             $element['filename'] = $filename;
             $element['category'] = 0;
@@ -67,7 +67,7 @@ function writeElFiles($task,$elementsPath,$elementsPackage,$settings,$category_i
         }
         $content = $modx->toJson($elements);
         $content = $modx->migx->indent($content);
-        $filename = $dir . '/' . $task . '.json';
+        $filename = $dir . '/' . $task . '.' . $category_id . '.json';
         writeElFile($filename, $content);
     }
 }
