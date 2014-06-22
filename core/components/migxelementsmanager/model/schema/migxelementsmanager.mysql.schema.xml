@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="migxelementsmanager" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">
+
+  <object class="memSnippet" table="mem_snippets" extends="xPDOSimpleObject">
+    <field key="element_id" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index"/>
+    <field key="package" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="static_path" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="exclude" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+    <aggregate alias="Element" class="modSnippet" local="element_id" foreign="id" cardinality="one" owner="foreign" />
+  </object>
+  <object class="memChunk" table="mem_chunks" extends="xPDOSimpleObject">
+    <field key="element_id" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index"/>
+    <field key="package" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="static_path" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="exclude" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+    <aggregate alias="Element" class="modChunk" local="element_id" foreign="id" cardinality="one" owner="foreign" />
+  </object>
+  <object class="memTemplate" table="mem_templates" extends="xPDOSimpleObject">
+    <field key="element_id" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index"/>
+    <field key="package" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="static_path" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="exclude" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+    <aggregate alias="Element" class="modTemplate" local="element_id" foreign="id" cardinality="one" owner="foreign" />
+  </object> 
+  <object class="memPlugin" table="mem_plugins" extends="xPDOSimpleObject">
+    <field key="element_id" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index"/>
+    <field key="package" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="static_path" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="exclude" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+    <aggregate alias="Element" class="modPlugin" local="element_id" foreign="id" cardinality="one" owner="foreign" />
+  </object>  
+  
+  <object class="memTemplateVar" table="mem_templatevars" extends="xPDOSimpleObject">
+    <field key="element_id" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index"/>
+    <field key="package" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="static_path" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="exclude" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+    <aggregate alias="Element" class="modTemplateVar" local="element_id" foreign="id" cardinality="one" owner="foreign" />
+  </object>
+  <object class="memCategory" table="mem_categories" extends="xPDOSimpleObject">
+    <field key="element_id" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index"/>
+    <field key="package" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="static_path" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <aggregate alias="Element" class="modCategory" local="element_id" foreign="id" cardinality="one" owner="foreign" />
+  </object>       
+
+    
+</model>

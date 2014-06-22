@@ -1,0 +1,5 @@
+Changelog for migxElementsManager
+
+migxElementsManager 1.0.0
+---------------------------------
+Initial Version
