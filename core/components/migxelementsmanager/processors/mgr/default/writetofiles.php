@@ -1,6 +1,7 @@
 <?php
 
-function recursive_mkdir($path, $mode = 0777) {
+function recursive_mkdir($path, $mode = 0777)
+{
     $dirs = explode(DIRECTORY_SEPARATOR, $path);
     $count = count($dirs);
     $path = '';
@@ -13,7 +14,8 @@ function recursive_mkdir($path, $mode = 0777) {
     return true;
 }
 
-function writeElFile($filename, $content) {
+function writeElFile($filename, $content)
+{
     if (!$handle = fopen($filename, "w")) {
         //print "Kann die Datei $filename nicht öffnen";
     }
@@ -24,9 +26,10 @@ function writeElFile($filename, $content) {
     fclose($handle);
 }
 
-function writeElFiles($task,$elementsPath,$elementsPackage,$settings,$category_id = 0,$category_name='') {
+function writeElFiles($task, $elementsPath, $elementsPackage, $settings, $category_id = 0, $category_name = '')
+{
     global $modx;
-    
+
     $dir = '';
     if (!empty($elementsPath)) {
         $dir = $elementsPath;
@@ -39,37 +42,51 @@ function writeElFiles($task,$elementsPath,$elementsPackage,$settings,$category_i
         if (!recursive_mkdir($dir, 0755)) {
             return 'failure';
         }
-    }
+        $nameField = $modx->getOption('nameField', $settings, 'name');
+        $elementsSuffix = $modx->getOption('elementsSuffix', $settings, '.php');
+        $elementsClass = $modx->getOption('elementsClass', $settings, false);
+        $contentField = $modx->getOption('contentField', $settings, '');
+        $memClass = str_replace('mod', 'mem', $elementClass);
 
-    $nameField = $modx->getOption('nameField', $settings, 'name');
-    $elementsSuffix = $modx->getOption('elementsSuffix', $settings, '.php');
-    $elementsClass = $modx->getOption('elementsClass', $settings, false);
-    $contentField = $modx->getOption('contentField', $settings, '');
+        if ($elementsClass && $collection = $modx->getIterator($elementsClass, array('category' => $category_id))) {
+            $elements = array();
+            foreach ($collection as $object) {
+                $id = $object->get('id');
+                $exclude = false;
+                if ($memObject = $modx->getObject($memClass, array('element_id' => $id))) {
+                    $exclude = $memObject->get('exclude');
+                }
 
-    if ($elementsClass && $collection = $modx->getIterator($elementsClass, array('category' => $category_id))) {
-        $elements = array();
-        foreach ($collection as $object) {
-            $element = $object->toArray();
-            unset($element[$contentField]);
-            unset($element['content']);
-            $filename = $dir . '/' . strtolower($object->get($nameField)) . $elementsSuffix;
-            $content = $object->getContent();
-            if (strstr($elementsSuffix, '.php')) {
-                $content = '<?php' . "\n" . $content;
+                if ($exclude) {
+                    continue;
+                }
+
+                $element = $object->toArray();
+                unset($element[$contentField]);
+                unset($element['content']);
+                $filename = strtolower($object->get($nameField)) . $elementsSuffix;
+                $element['filename'] = $filename;
+                $filename = $dir . '/' . $filename;
+                $content = $object->getContent();
+                if (strstr($elementsSuffix, '.php')) {
+                    $content = '<?php' . "\n" . $content;
+                }
+
+                writeElFile($filename, $content);
+
+                $element['category'] = 0;
+                $element['category_name'] = $category_name;
+                $elements[] = $element;
             }
-
+            $content = $modx->toJson($elements);
+            $content = $modx->migx->indent($content);
+            $filename = $dir . '/' . $task . '.' . $category_id . '.json';
             writeElFile($filename, $content);
-            
-            $element['filename'] = $filename;
-            $element['category'] = 0;
-            $element['category_name'] = $category_name;
-            $elements[] = $element;
         }
-        $content = $modx->toJson($elements);
-        $content = $modx->migx->indent($content);
-        $filename = $dir . '/' . $task . '.' . $category_id . '.json';
-        writeElFile($filename, $content);
+
     }
+
+
 }
 
 $config = $modx->migx->customconfigs;
@@ -93,24 +110,15 @@ $task = $modx->getOption('task', $scriptProperties, '');
 $object_id = $modx->getOption('object_id', $scriptProperties, '');
 $classname = $modx->getOption('classname', $config, '');
 
-$elementSettings = '
-{
-"snippets":{"elementsClass":"modSnippet","elementsSuffix":".snippet.php","nameField":"name","contentField":"snippet"},
-"chunks":{"elementsClass":"modChunk","elementsSuffix":".chunk.html","nameField":"name","contentField":"snippet"},
-"templates":{"elementsClass":"modTemplate","elementsSuffix":".template.html","nameField":"templatename","contentField":"content"},
-"plugins":{"elementsClass":"modPlugin","elementsSuffix":".plugin.php","nameField":"name","contentField":"plugincode"}
-}
-';
-
-$elementSettings = $modx->fromJson($elementSettings);
+$elementSettings = $modx->getOption('elementSettings', $config, '');
 
 if ($classname == 'memCategory') {
     //get elements of Category
     if ($memCategory = $modx->getObject($classname, $object_id)) {
         $category_id = $memCategory->get('element_id');
         $category_name = '';
-        if ($category = $memCategory->getOne('Element')){
-             $category_name = $category->get('category');
+        if ($category = $memCategory->getOne('Element')) {
+            $category_name = $category->get('category');
         }
 
         $elementsPackage = $memCategory->get('package');
@@ -118,11 +126,11 @@ if ($classname == 'memCategory') {
 
         if ($task == 'elements') {
             foreach ($elementSettings as $task => $settings) {
-                writeElFiles($task,$elementsPath,$elementsPackage,$settings,$category_id,$category_name);
+                writeElFiles($task, $elementsPath, $elementsPackage, $settings, $category_id, $category_name);
             }
         } else {
             $settings = $modx->getOption($task, $elementSettings, array());
-            writeElFiles($task,$elementsPath,$elementsPackage,$settings,$category_id,$category_name);
+            writeElFiles($task, $elementsPath, $elementsPackage, $settings, $category_id, $category_name);
         }
 
     }

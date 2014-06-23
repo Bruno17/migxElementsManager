@@ -45,6 +45,110 @@
         }
       ],
       "pos":1
+    },
+    {
+      "MIGX_id":51,
+      "caption":"Snippets",
+      "print_before_tabs":"0",
+      "fields":[
+        {
+          "MIGX_id":275,
+          "field":"snippets",
+          "caption":"Snippets",
+          "description":"",
+          "description_is_code":"0",
+          "inputTV":"",
+          "inputTVtype":"migxdb",
+          "validation":"",
+          "configs":"memsnippets",
+          "restrictive_condition":"",
+          "display":"",
+          "sourceFrom":"config",
+          "sources":"",
+          "inputOptionValues":"",
+          "default":"",
+          "pos":1
+        }
+      ],
+      "pos":2
+    },
+    {
+      "MIGX_id":52,
+      "caption":"Chunks",
+      "print_before_tabs":"0",
+      "fields":[
+        {
+          "MIGX_id":276,
+          "field":"chunks",
+          "caption":"Chunks",
+          "description":"",
+          "description_is_code":"0",
+          "inputTV":"",
+          "inputTVtype":"migxdb",
+          "validation":"",
+          "configs":"memchunks",
+          "restrictive_condition":"",
+          "display":"",
+          "sourceFrom":"config",
+          "sources":"",
+          "inputOptionValues":"",
+          "default":"",
+          "pos":1
+        }
+      ],
+      "pos":3
+    },
+    {
+      "MIGX_id":53,
+      "caption":"Templates",
+      "print_before_tabs":"0",
+      "fields":[
+        {
+          "MIGX_id":277,
+          "field":"templates",
+          "caption":"Templates",
+          "description":"",
+          "description_is_code":"0",
+          "inputTV":"",
+          "inputTVtype":"migxdb",
+          "validation":"",
+          "configs":"memtemplates",
+          "restrictive_condition":"",
+          "display":"",
+          "sourceFrom":"config",
+          "sources":"",
+          "inputOptionValues":"",
+          "default":"",
+          "pos":1
+        }
+      ],
+      "pos":4
+    },
+    {
+      "MIGX_id":54,
+      "caption":"Plugins",
+      "print_before_tabs":"0",
+      "fields":[
+        {
+          "MIGX_id":278,
+          "field":"plugins",
+          "caption":"Plugins",
+          "description":"",
+          "description_is_code":"0",
+          "inputTV":"",
+          "inputTVtype":"migxdb",
+          "validation":"",
+          "configs":"memplugins",
+          "restrictive_condition":"",
+          "display":"",
+          "sourceFrom":"config",
+          "sources":"",
+          "inputOptionValues":"",
+          "default":"",
+          "pos":1
+        }
+      ],
+      "pos":5
     }
   ],
   "contextmenus":"",
@@ -140,7 +244,7 @@
   "createdby":1,
   "createdon":"2014-06-22 12:37:51",
   "editedby":1,
-  "editedon":"2014-06-22 16:32:41",
+  "editedon":"2014-06-23 09:50:35",
   "deleted":0,
   "deletedon":"-1-11-30 00:00:00",
   "deletedby":0,

@@ -66,9 +66,25 @@
     }
   ],
   "contextmenus":"",
-  "actionbuttons":"loadElements",
+  "actionbuttons":"loadElements||readElFiles",
   "columnbuttons":"update",
-  "filters":"",
+  "filters":[
+    {
+      "MIGX_id":1,
+      "name":"snippet",
+      "label":"snippet",
+      "emptytext":"Search...",
+      "type":"textbox",
+      "getlistwhere":{
+        "Element.name:LIKE":"%[[+snippet]]%"
+      },
+      "getcomboprocessor":"",
+      "combotextfield":"",
+      "comboidfield":"",
+      "comboparent":"",
+      "default":""
+    }
+  ],
   "extended":{
     "migx_add":"Add Snippet",
     "disable_add_item":"",
@@ -92,8 +108,8 @@
     "use_custom_prefix":"0",
     "prefix":"",
     "grid":"",
-    "gridload_mode":1,
-    "check_resid":1,
+    "gridload_mode":2,
+    "check_resid":"0",
     "check_resid_TV":"",
     "join_alias":"",
     "has_jointable":"no",
@@ -142,7 +158,7 @@
   "createdby":1,
   "createdon":"2014-06-22 06:39:59",
   "editedby":1,
-  "editedon":"2014-06-22 12:54:55",
+  "editedon":"2014-06-23 13:15:15",
   "deleted":0,
   "deletedon":"-1-11-30 00:00:00",
   "deletedby":0,

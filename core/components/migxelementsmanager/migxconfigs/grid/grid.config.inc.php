@@ -28,6 +28,37 @@ loadElements: function(btn,e) {
 }
 ";
 
+$gridactionbuttons['readElFiles']['text'] = "'Read Elements from Component'";
+$gridactionbuttons['readElFiles']['handler'] = 'this.readElFiles';
+$gridactionbuttons['readElFiles']['scope'] = 'this';
+
+$gridfunctions['this.readElFiles'] = "
+readElFiles: function() {
+    Ext.Msg.prompt('Import configs from Package', 'Package:', function(btn, text) {
+        if (btn == 'ok') {
+            var package = text;
+            var url = this.config.url;
+            var configs = this.config.configs;
+            MODx.Ajax.request({
+                url: url,
+                params: {
+                    action: 'mgr/migxdb/process',
+                    processaction: 'importfromfiles',
+                    package: package,
+                    configs: configs
+                },
+                listeners: {
+                    'success': {
+                        fn: this.refresh,
+                        scope: this
+                    }
+                }
+            });
+        }
+    },this);
+}	
+";
+
 $gridcontextmenus['writeElFiles']['code']="
         m.push({
             className : 'writeElFiles', 
