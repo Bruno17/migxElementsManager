@@ -20,7 +20,7 @@ if (!empty($packageName)) {
     }
 }
 
-if ($reqconfigs == 'memcategories') {
+if ($reqconfigs == 'memcategories' || $reqconfigs == 'memcategories:migxelementsmanager') {
     if ($action == 'mgr/migxdb/getList') {
         if ($memCategory = $this->modx->getObject('memCategory', $object_id)) {
             $category = $memCategory->get('element_id');
