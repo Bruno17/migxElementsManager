@@ -22,18 +22,23 @@ $elementsClass = '';
 
 switch ($configs){
     case 'memsnippets':
+    case 'memsnippets:migxelementsmanager':
         $elementsClass = 'modSnippet';
         break;
     case 'memcategories':
+    case 'memcategories:migxelementsmanager':
         $elementsClass = 'modCategory';
         break;
     case 'memchunks':
+    case 'memchunks:migxelementsmanager':
         $elementsClass = 'modChunk';
         break;
     case 'memtemplates':
+    case 'memtemplates:migxelementsmanager':
         $elementsClass = 'modTemplate';
         break; 
     case 'memplugins':
+    case 'memplugins:migxelementsmanager':
         $elementsClass = 'modPlugin';
         break;                               
 }
@@ -41,7 +46,7 @@ switch ($configs){
 if (!empty($elementsClass) && $elements = $modx->getIterator($elementsClass)){
     foreach ($elements as $element){
         $id = $element->get('id');
-        if ($object = $modx->getObject($classname,$id)){
+        if ($object = $modx->getObject($classname,array('element_id' => $id))){
             
         }else{
             $object = $modx->newObject($classname);

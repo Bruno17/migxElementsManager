@@ -16,7 +16,7 @@ function recursive_mkdir($path, $mode = 0777)
 
 function writeElFile($filename, $content)
 {
-    if (!$handle = fopen($filename, "w")) {
+    if (!$handle = fopen($filename, "w+")) {
         //print "Kann die Datei $filename nicht öffnen";
     }
 

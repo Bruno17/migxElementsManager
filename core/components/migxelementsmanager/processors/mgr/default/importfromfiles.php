@@ -10,6 +10,7 @@ $classname = $config['classname'];
 
 $configs = $modx->getOption('configs', $scriptProperties, '');
 $task = str_replace ('mem','',$configs);
+$task = str_replace (':migxelementsmanager','',$configs);
 $elementSettings = $modx->getOption('elementSettings', $config, '');
 $settings = $modx->getOption($task, $elementSettings, array());
 $packageName = $modx->getOption('package', $scriptProperties, '');

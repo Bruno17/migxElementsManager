@@ -42,7 +42,13 @@
     <field key="package" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
     <field key="static_path" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
     <aggregate alias="Element" class="modCategory" local="element_id" foreign="id" cardinality="one" owner="foreign" />
-  </object>       
-
+  </object> 
+  <object class="memPackage" table="mem_packages" extends="xPDOSimpleObject">
+    <field key="package" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+    <field key="packageDescription" dbtype="text" phptype="string" null="false" default="" />
+    <field key="version" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+    <field key="release" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+    <field key="menus" dbtype="text" phptype="string" null="false" default="" />
+  </object>             
     
 </model>

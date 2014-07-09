@@ -9,5 +9,6 @@ $xpdo_meta_map = array (
     3 => 'memPlugin',
     4 => 'memTemplateVar',
     5 => 'memCategory',
+    6 => 'memPackage',
   ),
 );

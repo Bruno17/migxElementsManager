@@ -160,3 +160,63 @@ writeFiles: function(task) {
     }	
 ";
 
+
+$gridcontextmenus['prepareBuild']['code']="
+        m.push({
+            className : 'prepareBuild', 
+            text: 'Prepare Build',
+            handler: 'this.prepareBuild'
+        });
+        m.push('-');
+";
+$gridcontextmenus['prepareBuild']['handler'] = 'this.prepareBuild';
+
+$gridfunctions['this.prepareBuild'] = "
+prepareBuild: function() {
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'mgr/migxdb/process'
+				,processaction: 'preparebuild'
+                ,object_id: this.menu.record.id
+				,configs: this.config.configs
+                ,resource_id: this.config.resource_id
+                ,co_id: '[[+config.connected_object_id]]'
+                ,reqConfigs: '[[+config.req_configs]]'                
+            }
+            ,listeners: {
+                'success': {fn:this.refresh,scope:this}
+            }
+        });
+    }	
+";
+
+$gridcontextmenus['runBuild']['code']="
+        m.push({
+            className : 'runBuild', 
+            text: 'Build',
+            handler: 'this.runBuild'
+        });
+        m.push('-');
+";
+$gridcontextmenus['runBuild']['handler'] = 'this.runBuild';
+
+$gridfunctions['this.runBuild'] = "
+runBuild: function() {
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'mgr/migxdb/process'
+				,processaction: 'runbuild'
+                ,object_id: this.menu.record.id
+				,configs: this.config.configs
+                ,resource_id: this.config.resource_id
+                ,co_id: '[[+config.connected_object_id]]'
+                ,reqConfigs: '[[+config.req_configs]]'                
+            }
+            ,listeners: {
+                'success': {fn:this.refresh,scope:this}
+            }
+        });
+    }	
+";
