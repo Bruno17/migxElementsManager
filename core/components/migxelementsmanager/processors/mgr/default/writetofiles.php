@@ -62,6 +62,23 @@ function writeElFiles($task, $elementsPath, $elementsPackage, $settings, $catego
                 }
 
                 $element = $object->toArray();
+                if ($object instanceof modPlugin){
+                    $plugin_events = array();
+                    if ($events = $object->getMany('PluginEvents')){
+                        foreach ($events as $event_o){
+                            $event = $event_o->toArray();
+                            if ($event_e = $event_o->getOne('Event')){
+                                $systemevent = $event_e->toArray();
+                                $event = array_merge($event,$systemevent);
+                            } 
+                            
+                            $event['pluginid'] = $object->get('name');
+                            $plugin_events[] = $event;    
+                        }
+                    }
+                    $element['plugin_events'] = $plugin_events;     
+                }                  
+                                
                 unset($element[$contentField]);
                 unset($element['content']);
                 $filename = strtolower($object->get($nameField)) . $elementsSuffix;

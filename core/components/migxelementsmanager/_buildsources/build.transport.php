@@ -44,35 +44,31 @@
 
 /* config file must be retrieved in a class */
 if (!class_exists('BuildHelper')) {
-    class BuildHelper
-    {
+    class BuildHelper {
         /**
-         *  *  * @var $modx modX */
+         *  *  *  *  *  * @var $modx modX */
         protected $modx;
 
         /**
-         *  *  * @var $files array - array of files; created by dir_walk */
+         *  *  *  *  *  * @var $files array - array of files; created by dir_walk */
         protected $files = array();
 
         /**
-         *  *  * @var $props array - properties array */
+         *  *  *  *  *  * @var $props array - properties array */
         protected $props = array();
 
-        public function __construct(&$modx)
-        {
+        public function __construct(&$modx) {
             /* @var $modx modX */
             $this->modx = &$modx;
         }
 
-        public function getProps($configPath)
-        {
+        public function getProps($configPath) {
             $properties = @include $configPath;
             $this->props = $properties;
             return $properties;
         }
 
-        public function sendLog($level, $message)
-        {
+        public function sendLog($level, $message) {
             $msg = '';
             if ($level == modX::LOG_LEVEL_ERROR) {
                 $msg .= $this->modx->lexicon('mc_error') . ' -- ';
@@ -94,8 +90,7 @@ if (!class_exists('BuildHelper')) {
          * @param bool $recursive - if false, only searches $dir, not it's descendants
          * @param string $baseDir - used internally -- do not send
          */
-        public function dirWalk($dir, $types = null, $recursive = false, $baseDir = '')
-        {
+        public function dirWalk($dir, $types = null, $recursive = false, $baseDir = '') {
 
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
@@ -131,16 +126,14 @@ if (!class_exists('BuildHelper')) {
          * @param $dir string - directory of file (no trailing slash)
          * @param $file string - filename of file
          */
-        public function addFile($dir, $file)
-        {
+        public function addFile($dir, $file) {
             $this->files[$file] = $dir;
         }
 
         /**
          * Empties $this->files prior to dirWalk
          */
-        public function resetFiles()
-        {
+        public function resetFiles() {
             $this->files = array();
         }
 
@@ -149,8 +142,7 @@ if (!class_exists('BuildHelper')) {
          *
          * @return array
          */
-        public function getFiles()
-        {
+        public function getFiles() {
             return $this->files;
         }
 
@@ -159,8 +151,7 @@ if (!class_exists('BuildHelper')) {
          * @param $dir string - dir to search (no trailing slash)
          * @param bool $createJsAll - If true, create packageNameLower . '-all-min.js'
          */
-        public function mc_minify($minimizerFile, $dir, $createJsAll = false)
-        {
+        public function mc_minify($minimizerFile, $dir, $createJsAll = false) {
             $dir = rtrim($dir, '/');
             $this->resetFiles();
             $all = '';
@@ -321,7 +312,7 @@ $categories = include $sources['build'] . 'config/categories.php';
 if (empty($categories) || (!is_array($categories))) {
     //if no category was found, we create a category with the package-name
     $categories = array();
-    $category = array('category'=>PKG_NAME);
+    $category = array('category' => PKG_NAME);
     $categories[] = $category;
     //session_write_close();
     //die($modx->lexicon('no_categories'));
@@ -346,7 +337,7 @@ $hasResolvers = is_dir($sources['build'] . 'resolvers');
 $hasSetupOptions = is_dir($sources['install_options']);
 /* HTML/PHP script to interact with user */
 //$hasMenu = file_exists($sources['data'] . 'transport.menus.php');
-$hasMenu = is_array($menuprops) && count($menuprops)>0 ? true : false;
+$hasMenu = is_array($menuprops) && count($menuprops) > 0 ? true : false;
 /* Add items to the MODx Top Menu */
 $hasSettings = file_exists($sources['data'] . 'transport.settings.php');
 /* Add new MODx System Settings */
@@ -635,12 +626,13 @@ foreach ($categories as $k => $cat) {
         }
     }
 
-
+    $plugin_events = array();
     if ($hasPlugins) {
         /* Plugins' default properties are set in transport.plugins.php */
         //$plugins = include $sources['data'] . $categoryNameLower . '/transport.plugins.php';
         $plugins = array();
         $el_i = 1;
+
         foreach ($cat['plugins'] as $element) {
             $plugins[$el_i] = $modx->newObject('modPlugin');
             $plugins[$el_i]->fromArray(array(
@@ -652,10 +644,13 @@ foreach ($categories as $k => $cat) {
                 'properties' => $modx->getOption('properties', $element, ''),
                 ), '', true, true);
             $plugins[$el_i]->setContent($modx->getOption('content', $element, ''));
+            $events = $modx->getOption('plugin_events', $element, '');
+
+            $plugin_events = is_array($events) ? array_merge($plugin_events, $events) : $plugin_events;
+
 
             $el_i++;
         }
-
 
         if (is_array($plugins)) {
             if ($category->addMany($plugins, 'Plugins')) {
@@ -666,6 +661,14 @@ foreach ($categories as $k => $cat) {
         } else {
             $helper->sendLog(modX::LOG_LEVEL_FATAL, '    ' . $modx->lexicon('mc_non_array_in') . ' transport.plugins.php');
         }
+    }
+
+    $filename = $sources['resolvers'] . 'plugin.resolver.php';
+    if (file_exists($filename)) {
+        $plugin_events = $modx->toJson($plugin_events);
+        $content = file_get_contents($filename);
+        $content = str_replace('{events}', $plugin_events, $content);
+        file_put_contents($filename, $content);
     }
 
     /* Create Category attributes array dynamically
@@ -832,12 +835,10 @@ if ($hasMenu) {
                         xPDOTransport::UNIQUE_KEY => array('namespace', 'controller'),
                         ), ),
                 ));
-                
-            $modx->log(modX::LOG_LEVEL_INFO,'Adding in PHP resolvers resolve.menues.php');
-            $vehicle->resolve('php',array(
-                'source' => $sources['resolvers'] . 'resolve.menues.php',
-            )); 
-                            
+
+            $modx->log(modX::LOG_LEVEL_INFO, 'Adding in PHP resolvers resolve.menues.php');
+            $vehicle->resolve('php', array('source' => $sources['resolvers'] . 'resolve.menues.php', ));
+
             $builder->putVehicle($vehicle);
             unset($vehicle, $menu);
         }
