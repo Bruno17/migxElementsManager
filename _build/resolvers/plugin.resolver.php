@@ -50,7 +50,7 @@ if (!function_exists('checkFields')) {
 
 if ($object->xpdo) {
     $modx = &$object->xpdo;
-    $events = $modx->fromJson('{events}');
+    $events = $modx->fromJson('[]');
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         case xPDOTransport::ACTION_INSTALL:
         case xPDOTransport::ACTION_UPGRADE:
