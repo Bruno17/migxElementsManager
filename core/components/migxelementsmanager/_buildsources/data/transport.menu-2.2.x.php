@@ -28,29 +28,29 @@ $menus = array();
 
 if (is_array($menuprops)) {
     $i = 1;
-    foreach ($menuprops as $props) {
+    foreach ($menuprops as $m_props) {
         $action = $modx->newObject('modAction');
         $action->fromArray(array(
-            'namespace' => !empty($props['action.namespace']) ? $props['action.namespace'] : 'migx',
-            'controller' => !empty($props['action.controller']) ? $props['action.controller'] : 'index',
-            'haslayout' => !empty($props['action.haslayout']) ? $props['action.haslayout'] : 0,
-            'lang_topics' => !empty($props['action.lang_topics']) ? $props['action.lang_topics'] : 'example:default',
-            'assets' => !empty($props['action.assets']) ? $props['action.assets'] : '',
-            'help_url' => !empty($props['action.help_url']) ? $props['action.help_url'] : '',
+            'namespace' => !empty($m_props['action.namespace']) ? $m_props['action.namespace'] : 'migx',
+            'controller' => !empty($m_props['action.controller']) ? $m_props['action.controller'] : 'index',
+            'haslayout' => !empty($m_props['action.haslayout']) ? $m_props['action.haslayout'] : 0,
+            'lang_topics' => !empty($m_props['action.lang_topics']) ? $m_props['action.lang_topics'] : 'example:default',
+            'assets' => !empty($m_props['action.assets']) ? $m_props['action.assets'] : '',
+            'help_url' => !empty($m_props['action.help_url']) ? $m_props['action.help_url'] : '',
             'id' => $i,
             ), '', true, true);
 
 
         $menus[$i] = $modx->newObject('modMenu');
         $menus[$i]->fromArray(array(
-            'text' => !empty($props['text']) ? $props['text'] : '',
-            'parent' => !empty($props['parent']) ? $props['parent'] : '',
-            'description' => !empty($props['description']) ? $props['description'] : '',
-            'icon' => !empty($props['icon']) ? $props['icon'] : '',
-            'menuindex' => !empty($props['menuindex']) ? $props['menuindex'] : 0,
-            'params' => !empty($props['params']) ? $props['params'] : '',
-            'handler' => !empty($props['handler']) ? $props['handler'] : '',
-            'permissions' => !empty($props['permissions']) ? $props['permissions'] : '',
+            'text' => !empty($m_props['text']) ? $m_props['text'] : '',
+            'parent' => !empty($m_props['parent']) ? $m_props['parent'] : '',
+            'description' => !empty($m_props['description']) ? $m_props['description'] : '',
+            'icon' => !empty($m_props['icon']) ? $m_props['icon'] : '',
+            'menuindex' => !empty($m_props['menuindex']) ? $m_props['menuindex'] : 0,
+            'params' => !empty($m_props['params']) ? $m_props['params'] : '',
+            'handler' => !empty($m_props['handler']) ? $m_props['handler'] : '',
+            'permissions' => !empty($m_props['permissions']) ? $m_props['permissions'] : '',
             ), '', true, true);
 
         $menus[$i]->addOne($action);

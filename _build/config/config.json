@@ -2,7 +2,7 @@
   "id":2,
   "package":"migxElementsManager",
   "packageDescription":"",
-  "version":"0.7.1",
+  "version":"0.7.2",
   "release":"beta1",
   "menus":"[{\"MIGX_id\":\"1\",\"text\":\"migxElementsManager\",\"parent\":\"components\",\"description\":\"\",\"icon\":\"\",\"menuindex\":\"\",\"params\":\"&configs=memsnippets:migxelementsmanager||memchunks:migxelementsmanager||memtemplates:migxelementsmanager||memplugins:migxelementsmanager||memcategories:migxelementsmanager||mempackages:migxelementsmanager\",\"handler\":\"\",\"permissions\":\"\",\"action.id\":\"\",\"action.namespace\":\"\",\"action.controller\":\"\",\"action.haslayout\":\"0\",\"action.lang_topics\":\"\",\"action.assets\":\"\"}]"
 }

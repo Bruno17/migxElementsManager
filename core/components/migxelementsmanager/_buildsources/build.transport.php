@@ -248,10 +248,12 @@ $modx->lexicon->load('mycomponent:default');
 //$props = $helper->getProps(dirname(__FILE__) . '/config/' . $currentProject . '.config.php');
 
 $props = $modx->fromJson(file_get_contents(dirname(__file__) . '/config/config.json'));
+$props['install.options'] = '1';
 $props['packageName'] = $modx->getOption('package', $props);
 $props['packageNameLower'] = strtolower($modx->getOption('package', $props));
 //$props['targetRoot'] = $modx->getOption('assets_path') . 'mypackages/' . $props['packageNameLower'] . '/';
 //$props = isset($configArray) ? $configArray : false;
+
 
 if (!is_array($props)) {
     session_write_close();
@@ -335,6 +337,7 @@ $hasValidators = is_dir($sources['build'] . 'validators');
 /* Run a validators before installing anything */
 $hasResolvers = is_dir($sources['build'] . 'resolvers');
 $hasSetupOptions = is_dir($sources['install_options']);
+
 /* HTML/PHP script to interact with user */
 //$hasMenu = file_exists($sources['data'] . 'transport.menus.php');
 $hasMenu = is_array($menuprops) && count($menuprops) > 0 ? true : false;
@@ -855,7 +858,9 @@ $attr = array(
     'changelog' => file_get_contents($sources['docs'] . 'changelog.txt'),
     );
 
+
 if ($hasSetupOptions && !empty($props['install.options'])) {
+    $modx->log(modX::LOG_LEVEL_INFO, 'Adding in install_options user.input.php');
     $attr['setup-options'] = array('source' => $sources['install_options'] . 'user.input.php', );
 } else {
     $attr['setup-options'] = array();
