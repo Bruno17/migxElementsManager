@@ -60,15 +60,18 @@ function exportFiles($configArray)
 
 }
 
-function exportBuildFiles($configArray)
-{
+function exportBuildFiles($configArray) {
     global $modx;
+
     $dirPermission = $modx->getOption('dirPermission', $configArray, 0777);
     $packageNameLower = $modx->getOption('packageNameLower', $configArray, '');
-    $targetRoot = $modx->getOption('targetRoot', $configArray, '') ;
+    $targetRoot = $modx->getOption('targetRoot', $configArray, '');
     $workingDir = $modx->getOption('core_path') . 'components/migxelementsmanager/_buildsources/';
     if (!empty($packageNameLower) && !empty($workingDir) && !empty($targetRoot)) {
         $targetDir = $targetRoot . '_build/';
+        copyDir($workingDir, $targetDir, $dirPermission);
+        //overwrite from package
+        $workingDir = $modx->getOption('core_path') . 'components/' . $packageNameLower . '/_buildsources/';
         copyDir($workingDir, $targetDir, $dirPermission);
     }
 }
@@ -112,10 +115,19 @@ if ($object = $modx->getObject($classname, $object_id)) {
     }
     
     $filename = $configArray['targetRoot'] . '_build/resolvers/resolve.menues.php';
+    $menus = $object->get('menus');
     if (file_exists($filename)){
-        $menus = $object->get('menus');
         $content = file_get_contents($filename);
         $content = str_replace('{menus}',$menus,$content);
+        file_put_contents($filename,$content);
+    }
+
+    $filename = $configArray['targetRoot'] . '_build/install.options/user.input.php';
+    $menus = $modx->fromJson($menus);
+    $hasMenu = is_array($menus) && count($menus)>0 ? '1' : '0';
+    if (file_exists($filename)){
+        $content = file_get_contents($filename);
+        $content = str_replace('{hasMenu}',$hasMenu,$content);
         file_put_contents($filename,$content);
     }    
 }
